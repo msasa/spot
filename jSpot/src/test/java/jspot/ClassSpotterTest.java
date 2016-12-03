@@ -39,8 +39,10 @@ public class ClassSpotterTest extends Adult {
     void nekiMetod() {}
 
     public static void main( String[] args ) {
+        System.out.println( JSpot.spotTheObject( new ClassSpotterTest() ) );
         System.out.println( JSpot.spotTheObject( new ClassSpotterTest(), "s" ) );
         System.out.println( JSpot.spotTheObject( new ClassSpotterTest(), false ) );
+        System.out.println( JSpot.spotTheObject( new ClassSpotterTest(), false, "cst" ) );
         System.out.println( JSpot.spotTheClass( ClassSpotterTest.class ) );
         System.out.println( JSpot.spotTheClass( ClassSpotterTest.class, false ) );
         System.out.println( JSpot.spotTheObjectWithParents( new ClassSpotterTest() ) );

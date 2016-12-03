@@ -63,6 +63,6 @@ public class SpotClass {
         if ( !getClassPackage().isEmpty() ) {
             PACKAGE_SEPARATOR = ".";
         }
-        return String.format( "%s%s%s", getClassPackage(), PACKAGE_SEPARATOR, getClassName() );
+        return getClassPackage().concat( PACKAGE_SEPARATOR ).concat( getClassName() );
     }
 }
