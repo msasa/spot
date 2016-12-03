@@ -1,6 +1,7 @@
 package jSpot;
 
 /**
+ * Created by Sasa Milenkovic on 2016/11/30
  * This is the main class which holds main interface for API usage
  */
 public class jSpot {
@@ -18,8 +19,8 @@ public class jSpot {
      * @param o object to convert
      * @return a string having object's definition in SPOT format
      */
-    public static String spotTheObject(Object o) {
-        return spotTheClass(o.getClass(), true);
+    public static String spotTheObject( Object o ) {
+        return spotTheClass( o.getClass(), true );
     }
 
     /**
@@ -30,8 +31,8 @@ public class jSpot {
      * @param simpleName true or false, where false prepends package name to the simple name
      * @return a string having object's definition in SPOT format
      */
-    public static String spotTheObject(Object o, boolean simpleName) {
-        return spotTheClass(o.getClass(), simpleName);
+    public static String spotTheObject( Object o, boolean simpleName ) {
+        return spotTheClass( o.getClass(), simpleName );
     }
 
     /**
@@ -41,8 +42,8 @@ public class jSpot {
      * @param o object to convert
      * @return a string having object's definition in SPOT format
      */
-    public static String spotTheObjectWithParents(Object o) {
-        return spotTheClassWithParents(o.getClass(), true);
+    public static String spotTheObjectWithParents( Object o ) {
+        return spotTheClassWithParents( o.getClass(), true );
     }
 
     /**
@@ -53,8 +54,8 @@ public class jSpot {
      * @param simpleName true or false, where false prepends package name to the simple name
      * @return a string having object's definition in SPOT format
      */
-    public static String spotTheObjectWithParents(Object o, boolean simpleName) {
-        return spotTheClassWithParents(o.getClass(), simpleName);
+    public static String spotTheObjectWithParents( Object o, boolean simpleName ) {
+        return spotTheClassWithParents( o.getClass(), simpleName );
     }
 
     /**
@@ -64,8 +65,8 @@ public class jSpot {
      * @param clazz class to convert
      * @return a string having class definition in SPOT format
      */
-    public static String spotTheClass(Class<?> clazz) {
-        return spotTheClass(clazz, true);
+    public static String spotTheClass( Class< ? > clazz ) {
+        return spotTheClass( clazz, true );
     }
 
     /**
@@ -76,11 +77,12 @@ public class jSpot {
      * @param simpleName true or false, where false prepends package name to the simple name
      * @return a string having class definition in SPOT format
      */
-    public static String spotTheClass(Class<?> clazz, boolean simpleName) {
-        if (simpleName) {
-            return String.format("%s:<%s>", clazz.getSimpleName(), new ClassSpotter().getAttributes(clazz).getKey());
+    public static String spotTheClass( Class< ? > clazz, boolean simpleName ) {
+        SpotClass result = new ClassSpotter().getAttributes( clazz );
+        if ( simpleName ) {
+            return result.getClassName() + result.getSpotFormat();
         }
-        return String.format("%s:<%s>", clazz.getName(), new ClassSpotter().getAttributes(clazz).getKey());
+        return result.getFullName() + result.getSpotFormat();
     }
 
     /**
@@ -90,8 +92,8 @@ public class jSpot {
      * @param clazz class to convert
      * @return a string having class definition in SPOT format
      */
-    public static String spotTheClassWithParents(Class<?> clazz) {
-        return spotTheClassWithParents(clazz, true);
+    public static String spotTheClassWithParents( Class< ? > clazz ) {
+        return spotTheClassWithParents( clazz, true );
     }
 
     /**
@@ -102,11 +104,11 @@ public class jSpot {
      * @param simpleName true or false, where false prepends package name to the simple name
      * @return a string having object's definition in SPOT format
      */
-    public static String spotTheClassWithParents(Class<?> clazz, boolean simpleName) {
-        if (simpleName) {
-            return String.format("%s:<%s>", clazz.getSimpleName(), new ClassSpotter().getParentAttributes(clazz).getKey());
+    public static String spotTheClassWithParents( Class< ? > clazz, boolean simpleName ) {
+        SpotClass result = new ClassSpotter().getParentAttributes( clazz );
+        if ( simpleName ) {
+            return result.getClassName() + result.getSpotFormat();
         }
-        return String.format("%s:<%s>", clazz.getName(), new ClassSpotter().getParentAttributes(clazz).getKey());
+        return result.getFullName() + result.getSpotFormat();
     }
-
 }

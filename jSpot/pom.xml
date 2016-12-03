@@ -6,23 +6,18 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>Java SPOT API</name>
     <description>Serialization Protocol for Object Transfer</description>
-    <!--<dependencies>-->
-    <!--<dependency>-->
-    <!--<groupId>org.apache.commons</groupId>-->
-    <!--<artifactId>commons-lang3</artifactId>-->
-    <!--<version>3.5</version>-->
-    <!--</dependency>-->
-    <!--<dependency>-->
-    <!--<groupId>commons-io</groupId>-->
-    <!--<artifactId>commons-io</artifactId>-->
-    <!--<version>2.5</version>-->
-    <!--</dependency>-->
-    <!--<dependency>-->
-    <!--<groupId>com.google.code.gson</groupId>-->
-    <!--<artifactId>gson</artifactId>-->
-    <!--<version>2.8.0</version>-->
-    <!--</dependency>-->
-    <!--</dependencies>-->
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.5</version>
+        </dependency>
+        <!--<dependency>-->
+        <!--<groupId>commons-io</groupId>-->
+        <!--<artifactId>commons-io</artifactId>-->
+        <!--<version>2.5</version>-->
+        <!--</dependency>-->
+    </dependencies>
     <build>
         <plugins>
             <plugin>

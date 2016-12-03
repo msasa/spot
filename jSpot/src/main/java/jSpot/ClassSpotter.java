@@ -1,21 +1,52 @@
 package jSpot;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.lang.reflect.Field;
-import java.util.AbstractMap;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
+import java.util.StringJoiner;
 
 /**
- * Created by Sasa on 12/3/2016.
+ * Created by Sasa Milenkovic on 2016/12/03.
+ * <p>
+ * This class encapsulates the logic of creating SPOT format of the given object or class. It uses reflection to do
+ * that. It can return the complete list of class attributes respecting all the parents and interfaces, or just
+ * attributes specific to the class definition.
+ * Since SPOT format is using sequence of appearence as useful data, than all the methods returns both, SPOT format
+ * of the class and a list of attributes to represent the sequence.
  */
 public class ClassSpotter {
-    private String comma = "";
+    private final SpotClass spotted = new SpotClass();
 
     /**
      * Returns a comma separated list of all the attributes members inside the given class and its parents.
-     * That goes for all the parents except the Java root class - Object. Attributes of the implemented
-     * interfaces are not shown also.
+     * That goes for all the parents except the Java root class - Object.
+     *
+     * @param clazz is the class which needs to be analyzed
+     * @return SpotClass that contains attributes written twice:
+     * <li>in a String (as the pair key) of comma-separated attributes, where all collections are surrounded with the
+     * brackets ('[' and ']')</li>
+     * <li>in a List (as the pair value) to maintain the same sequence, needed for the data extraction</li>
+     */
+    protected SpotClass getParentAttributes( Class< ? > clazz ) {
+        if ( null != clazz.getPackage() ) {
+            spotted.setClassPackage( clazz.getPackage().getName().trim() );
+        }
+        if ( null != clazz.getSimpleName() ) {
+            spotted.setClassName( clazz.getSimpleName().trim() );
+        }
+        while ( clazz.getSuperclass() != null ) {
+            getInterfaceAttributes( clazz );
+            getAttributes( clazz );
+            clazz = clazz.getSuperclass();
+        }
+        spotted.setSpotFormat( spotTheResultList( clazz.getName() ) );
+        return spotted;
+    }
+
+    /**
+     * Returns a comma separated list of all the attributes members inside the given class, but not its parents.
+     * Attributes of the implemented interfaces are not shown also.
      *
      * @param clazz is the class which needs to be analyzed
      * @return Map that contains attributes written twice:
@@ -23,42 +54,52 @@ public class ClassSpotter {
      * brackets ('[' and ']')</li>
      * <li>in a List (as the pair value) to maintain the same sequence, needed for the data extraction</li>
      */
-    protected AbstractMap.SimpleImmutableEntry< String, List< String > > getParentAttributes( Class< ? > clazz ) {
-        Class< ? > parent = clazz.getSuperclass();
-        List< String > attributes = new ArrayList<>();
-        StringBuilder sb = new StringBuilder();
-        while ( parent.getSuperclass() != null ) {
-            AbstractMap.SimpleImmutableEntry< String, List< String > > itsAttributes = getAttributes( parent );
-            sb.append( itsAttributes.getKey() );
-            attributes.addAll( itsAttributes.getValue() );
-            parent = parent.getSuperclass();
+    protected SpotClass getAttributes( final Class< ? > clazz ) {
+
+        if ( StringUtils.isEmpty( spotted.getClassName() ) ) {
+            if ( null != clazz.getPackage() ) {
+                spotted.setClassPackage( clazz.getPackage().getName().trim() );
+            }
+            if ( null != clazz.getSimpleName() ) {
+                spotted.setClassName( clazz.getSimpleName().trim() );
+            }
         }
-        return new AbstractMap.SimpleImmutableEntry<>( sb.toString(), attributes );
+
+        for ( Field f : clazz.getDeclaredFields() ) {
+            // allow to add just unique attributes names
+            String arrayed = String.format( "[%s]", f.getName() );
+            if ( !spotted.getAttributesList().contains( f.getName() )
+                    && !spotted.getAttributesList().contains( arrayed ) ) {
+                if ( f.getType().isArray() || Collection.class.isAssignableFrom( f.getType() ) ) {
+                    spotted.getAttributesList().add( String.format( arrayed ) );
+                } else {
+                    spotted.getAttributesList().add( f.getName() );
+                }
+            }
+        }
+        spotted.setSpotFormat( spotTheResultList( clazz.getName() ) );
+        return spotted;
     }
 
     /**
-     * Returns a comma separated list of all the attributes members inside the given class, but not its parents.
-     * Attributes of the implemented interfaces are not shown also.
+     * Uset to get attributes from interfaces of the given class.
+     *
      * @param clazz is the class which needs to be analyzed
-     * @return Map that contains attributes written twice:
-     * <li>in a String (as the pair key) of comma-separated attributes, where all collections are surrounded with the
-     * brackets ('[' and ']')</li>
-     * <li>in a List (as the pair value) to maintain the same sequence, needed for the data extraction</li>
      */
-    protected AbstractMap.SimpleImmutableEntry< String, List< String > > getAttributes( Class< ? > clazz ) {
-        StringBuilder sb = new StringBuilder();
-        List< String > attributes = new ArrayList<>();
-        for ( Field f : clazz.getDeclaredFields() ) {
-            sb.append( comma );
-            comma = ",";
-            attributes.add( f.getName() );
-            if ( f.getType().isArray() || Collection.class.isAssignableFrom( f.getType() ) ) {
-                sb.append( '[' ).append( f.getName() ).append( ']' );
-            } else {
-                sb.append( f.getName() );
-            }
+    private void getInterfaceAttributes( final Class< ? > clazz ) {
+        for ( Class ifc : clazz.getInterfaces() ) {
+            getAttributes( ifc );
         }
-        return new AbstractMap.SimpleImmutableEntry<>( sb.toString(), attributes );
     }
 
+    private String spotTheResultList( String className ) {
+        if ( !spotted.getAttributesList().isEmpty() ) {
+            StringJoiner spot = new StringJoiner( ",", ":<", ">" );
+            for ( String el : spotted.getAttributesList() ) {
+                spot.add( el );
+            }
+            return spot.toString();
+        }
+        return "";
+    }
 }
