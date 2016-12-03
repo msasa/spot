@@ -1,4 +1,4 @@
-package jSpot;
+package jspot;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -16,12 +16,12 @@ public class SpotClass {
     private String classPackage = "";
     private String className = "";
     private String spotFormat = "";
+    private String alias = "";
 
     /**
      * Can be instantiated just from within the package
      */
-    protected SpotClass() {
-    }
+    protected SpotClass() {}
 
     public String getClassName() {
         return className;
@@ -49,6 +49,14 @@ public class SpotClass {
 
     protected void setSpotFormat( final String s ) {
         spotFormat = s;
+    }
+
+    public String getAlias() {
+        return alias;
+    }
+
+    protected void setAlias( final String alias ) {
+        this.alias = alias;
     }
 
     public String getFullName() {

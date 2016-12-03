@@ -1,4 +1,4 @@
-package jSpot;
+package jspot;
 
 import java.util.HashMap;
 import java.util.List;
@@ -39,13 +39,13 @@ public class ClassSpotterTest extends Adult {
     void nekiMetod() {}
 
     public static void main( String[] args ) {
-        System.out.println( jSpot.spotTheObject( new ClassSpotterTest() ) );
-        System.out.println( jSpot.spotTheObject( new ClassSpotterTest(), false ) );
-        System.out.println( jSpot.spotTheClass( ClassSpotterTest.class ) );
-        System.out.println( jSpot.spotTheClass( ClassSpotterTest.class, false ) );
-        System.out.println( jSpot.spotTheObjectWithParents( new ClassSpotterTest() ) );
-        System.out.println( jSpot.spotTheObjectWithParents( new ClassSpotterTest(), false ) );
-        System.out.println( jSpot.spotTheClassWithParents( ClassSpotterTest.class ) );
-        System.out.println( jSpot.spotTheClassWithParents( ClassSpotterTest.class, false ) );
+        System.out.println( JSpot.spotTheObject( new ClassSpotterTest(), "s" ) );
+        System.out.println( JSpot.spotTheObject( new ClassSpotterTest(), false ) );
+        System.out.println( JSpot.spotTheClass( ClassSpotterTest.class ) );
+        System.out.println( JSpot.spotTheClass( ClassSpotterTest.class, false ) );
+        System.out.println( JSpot.spotTheObjectWithParents( new ClassSpotterTest() ) );
+        System.out.println( JSpot.spotTheObjectWithParents( new ClassSpotterTest(), false ) );
+        System.out.println( JSpot.spotTheClassWithParents( ClassSpotterTest.class, "s"  ) );
+        System.out.println( JSpot.spotTheClassWithParents( ClassSpotterTest.class, false ) );
     }
 }

@@ -1,4 +1,4 @@
-package jSpot;
+package jspot;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -28,7 +28,7 @@ public class ClassSpotter {
      * brackets ('[' and ']')</li>
      * <li>in a List (as the pair value) to maintain the same sequence, needed for the data extraction</li>
      */
-    protected SpotClass getParentAttributes( Class< ? > clazz ) {
+    protected SpotClass getParentAttributes( Class< ? > clazz, String alias ) {
         if ( null != clazz.getPackage() ) {
             spotted.setClassPackage( clazz.getPackage().getName().trim() );
         }
@@ -37,7 +37,7 @@ public class ClassSpotter {
         }
         while ( clazz.getSuperclass() != null ) {
             getInterfaceAttributes( clazz );
-            getAttributes( clazz );
+            getAttributes( clazz, alias );
             clazz = clazz.getSuperclass();
         }
         spotted.setSpotFormat( spotTheResultList( clazz.getName() ) );
@@ -67,11 +67,13 @@ public class ClassSpotter {
 
         for ( Field f : clazz.getDeclaredFields() ) {
             // allow to add just unique attributes names
-            String arrayed = String.format( "[%s]", f.getName() );
+            String arrayed = JSpot.ATTRIBUTES_ARRAY_LEFT_SEPARATOR
+                    .concat( f.getName() )
+                    .concat( JSpot.ATTRIBUTES_ARRAY_RIGHT_SEPARATOR );
             if ( !spotted.getAttributesList().contains( f.getName() )
                     && !spotted.getAttributesList().contains( arrayed ) ) {
                 if ( f.getType().isArray() || Collection.class.isAssignableFrom( f.getType() ) ) {
-                    spotted.getAttributesList().add( String.format( arrayed ) );
+                    spotted.getAttributesList().add( arrayed );
                 } else {
                     spotted.getAttributesList().add( f.getName() );
                 }
@@ -81,11 +83,16 @@ public class ClassSpotter {
         return spotted;
     }
 
-    /**
-     * Uset to get attributes from interfaces of the given class.
-     *
-     * @param clazz is the class which needs to be analyzed
-     */
+    protected SpotClass getAttributes( final Class< ? > clazz, String alias ) {
+        getAttributes( clazz);
+        spotted.setAlias( alias );
+        return spotted;
+    }
+        /**
+         * Uset to get attributes from interfaces of the given class.
+         *
+         * @param clazz is the class which needs to be analyzed
+         */
     private void getInterfaceAttributes( final Class< ? > clazz ) {
         for ( Class ifc : clazz.getInterfaces() ) {
             getAttributes( ifc );
@@ -94,7 +101,8 @@ public class ClassSpotter {
 
     private String spotTheResultList( String className ) {
         if ( !spotted.getAttributesList().isEmpty() ) {
-            StringJoiner spot = new StringJoiner( ",", ":<", ">" );
+            StringJoiner spot = new StringJoiner( JSpot.ATTRIBUTES_SEPARATOR, JSpot.CLASS_CONTENT_START,
+                    JSpot.CLASS_SEPARATOR_RIGHT );
             for ( String el : spotted.getAttributesList() ) {
                 spot.add( el );
             }
