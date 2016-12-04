@@ -9,4 +9,4 @@ It is innitially developing in Java, but intention is to support much more langu
 
 # Examples
 
-<code>Adult {public|protecte|none|gender|private|age|[children]|address|height|[siblings]|[parents]|naturallyConcieved}@A</code>
+<code>Adult {public|protected|none|gender|private|age|[children]|address|height|[siblings]|[parents]|naturallyConcieved}@A</code>
