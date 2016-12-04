@@ -5,4 +5,4 @@ This is meant to be replacement to JSON format, since JSON should be better in t
 
 # Language support
 
-It is innitially developed in Java, but intention is to support much more languages. First next support would be to JavaScript.  
+It is innitially developing in Java, but intention is to support much more languages. First next support would be to JavaScript.  
