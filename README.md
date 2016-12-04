@@ -9,6 +9,6 @@ It is innitially developing in Java, but intention is to support much more langu
 
 # Examples
 
-<code>Adult \<public|protected|none|gender|private|age|[children]|address|height|[siblings]|[parents]|naturallyConcieved\>@A</code>
-<code>A {true|null|false||M|true|35|[Mellanie|Peter]||6.62|[]|[John|Miriam]|0}@first</code>
+<code>Adult \<public|protected|none|gender|private|age|[children]|address|height|[siblings]|[parents]|naturallyConcieved\>@A</code><br />
+<code>A {true|null|false||M|true|35|[Mellanie|Peter]||6.62|[]|[John|Miriam]|0}@first</code><br />
 <code>A {${first}}</code>
