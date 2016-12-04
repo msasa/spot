@@ -6,3 +6,7 @@ This is meant to be replacement to JSON format, since JSON should be better in t
 # Language support
 
 It is innitially developing in Java, but intention is to support much more languages. First next support would be to JavaScript.  
+
+# Examples
+
+<code>Adult {public|protecte|none|gender|private|age|[children]|address|height|[siblings]|[parents]|naturallyConcieved}@A</code>
