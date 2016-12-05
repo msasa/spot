@@ -1,13 +1,13 @@
-# SPOT 
-(Serialize Protocol for Object Transfer)
+### SPOT 
+(Serialization Protocol for Object Transfer)
 
 This is meant to be replacement to JSON format, since JSON should be better in transferring data that is repeated several times. Spot should be a format which enables to reffer to same data and cause less traffic when exchanging that data. It also need to be simple and need to use less used signs as reserved symbols in order to make less trouble with escaping it.
 
-# Language support
+### Language support
 
 It is innitially developing in Java, but intention is to support much more languages. First next support would be to JavaScript.  
 
-# Examples
+### Examples
 
 <code>Adult \<public|protected|none|gender|private|age|[children]|address|height|[siblings]|[parents]|naturallyConcieved\>@A</code><br />
 <code>A {true|null|false||M|true|35|[Mellanie|Peter]||6.62|[]|[John|Miriam]|0}@first</code><br />
