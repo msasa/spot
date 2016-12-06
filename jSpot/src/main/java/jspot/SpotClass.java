@@ -17,6 +17,7 @@ public class SpotClass {
     private String className = "";
     private String spotFormat = "";
     private String alias = "";
+    private String content = "";
 
     /**
      * Can be instantiated just from within the package
@@ -57,6 +58,14 @@ public class SpotClass {
 
     protected void setAlias( final String alias ) {
         this.alias = alias;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    protected void setContent( final String content ) {
+        this.content = content;
     }
 
     public String getFullName() {

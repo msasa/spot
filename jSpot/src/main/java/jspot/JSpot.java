@@ -37,8 +37,8 @@ public class JSpot {
      * @param o object to convert
      * @return a string having object's definition in SPOT format
      */
-    public static String spotTheObject( Object o ) {
-        return spotTheClass( o.getClass(), true, null );
+    public static SpotClass spotTheObject( Object o ) {
+        return spotTheObject( o, true, null );
     }
 
     /**
@@ -49,8 +49,8 @@ public class JSpot {
      * @param alias alias used as the reference to the object o. Both, name and alias, can be used equally.
      * @return a string having object's definition in SPOT format
      */
-    public static String spotTheObject( Object o, String alias ) {
-        return spotTheClass( o.getClass(), true, alias );
+    public static SpotClass spotTheObject( Object o, String alias ) {
+        return spotTheObject( o, true, alias );
     }
 
     /**
@@ -61,8 +61,8 @@ public class JSpot {
      * @param simpleName true or false, where false prepends package name to the simple name
      * @return a string having object's definition in SPOT format
      */
-    public static String spotTheObject( Object o, boolean simpleName ) {
-        return spotTheClass( o.getClass(), simpleName, null );
+    public static SpotClass spotTheObject( Object o, boolean simpleName ) {
+        return spotTheObject( o, simpleName, null );
     }
 
     /**
@@ -74,8 +74,9 @@ public class JSpot {
      * @param alias alias used as the reference to the object o. Both, name and alias, can be used equally.
      * @return a string having object's definition in SPOT format
      */
-    public static String spotTheObject( Object o, boolean simpleName, String alias ) {
-        return spotTheClass( o.getClass(), simpleName, alias );
+    public static SpotClass spotTheObject( Object o, boolean simpleName, String alias ) {
+        SpotClass spotted = spotTheClass( o.getClass(), simpleName, alias );
+        return ObjectSpotter.getAttributesValues( o, spotted );
     }
 
     /**
@@ -85,8 +86,8 @@ public class JSpot {
      * @param o object to convert
      * @return a string having object's definition in SPOT format
      */
-    public static String spotTheObjectWithParents( Object o ) {
-        return spotTheClassWithParents( o.getClass(), true, null );
+    public static SpotClass spotTheObjectWithParents( Object o ) {
+        return spotTheObjectWithParents( o, true, null );
     }
 
     /**
@@ -97,8 +98,8 @@ public class JSpot {
      * @param alias alias used as the reference to the object o. Both, name and alias, can be used equally.
      * @return a string having object's definition in SPOT format
      */
-    public static String spotTheObjectWithParents( Object o, String alias ) {
-        return spotTheClassWithParents( o.getClass(), true, alias );
+    public static SpotClass spotTheObjectWithParents( Object o, String alias ) {
+        return spotTheObjectWithParents( o, true, alias );
     }
 
     /**
@@ -109,8 +110,8 @@ public class JSpot {
      * @param simpleName true or false, where false prepends package name to the simple name
      * @return a string having object's definition in SPOT format
      */
-    public static String spotTheObjectWithParents( Object o, boolean simpleName ) {
-        return spotTheClassWithParents( o.getClass(), simpleName, null );
+    public static SpotClass spotTheObjectWithParents( Object o, boolean simpleName ) {
+        return spotTheObjectWithParents( o, simpleName, null );
     }
 
     /**
@@ -122,8 +123,9 @@ public class JSpot {
      * @param alias alias used as the reference to the object o. Both, name and alias, can be used equally.
      * @return a string having object's definition in SPOT format
      */
-    public static String spotTheObjectWithParents( Object o, boolean simpleName, String alias ) {
-        return spotTheClassWithParents( o.getClass(), simpleName, alias );
+    public static SpotClass spotTheObjectWithParents( Object o, boolean simpleName, String alias ) {
+        SpotClass spotted = spotTheClassWithParents( o.getClass(), simpleName, alias );
+        return ObjectSpotter.getAttributesValues( o, spotted );
     }
 
     /**
@@ -133,7 +135,7 @@ public class JSpot {
      * @param clazz class to convert
      * @return a string having class definition in SPOT format
      */
-    public static String spotTheClass( Class< ? > clazz ) {
+    public static SpotClass spotTheClass( Class< ? > clazz ) {
         return spotTheClass( clazz, true, null );
     }
 
@@ -145,7 +147,7 @@ public class JSpot {
      * @param simpleName true or false, where false prepends package name to the simple name
      * @return a string having class definition in SPOT format
      */
-    public static String spotTheClass( Class< ? > clazz, boolean simpleName ) {
+    public static SpotClass spotTheClass( Class< ? > clazz, boolean simpleName ) {
         return spotTheClass( clazz, simpleName, null );
     }
 
@@ -157,7 +159,7 @@ public class JSpot {
      * @param alias alias used as the reference to the class clazz. Both, name and alias, can be used equally.
      * @return a string having class definition in SPOT format
      */
-    public static String spotTheClass( Class< ? > clazz, String alias ) {
+    public static SpotClass spotTheClass( Class< ? > clazz, String alias ) {
         return spotTheClass( clazz, true, alias );
     }
 
@@ -170,7 +172,7 @@ public class JSpot {
      * @param alias alias used as the reference to the class clazz. Both, name and alias, can be used equally.
      * @return a string having class definition in SPOT format
      */
-    public static String spotTheClass( Class< ? > clazz, boolean simpleName, String alias ) {
+    public static SpotClass spotTheClass( Class< ? > clazz, boolean simpleName, String alias ) {
         SpotClass spotted = ( new ClassSpotter() ).getAttributes( clazz, alias );
         String result;
         if ( simpleName ) {
@@ -181,7 +183,7 @@ public class JSpot {
         if ( !StringUtils.isEmpty( spotted.getAlias() ) ) {
             result = result.concat( JSpot.CLASS_ALIAS_SEPARATOR ).concat( spotted.getAlias() );
         }
-        return result;
+        return spotted;
 
     }
 
@@ -192,7 +194,7 @@ public class JSpot {
      * @param clazz class to convert
      * @return a string having class definition in SPOT format
      */
-    public static String spotTheClassWithParents( Class< ? > clazz ) {
+    public static SpotClass spotTheClassWithParents( Class< ? > clazz ) {
         return spotTheClassWithParents( clazz, true, null );
     }
 
@@ -204,7 +206,7 @@ public class JSpot {
      * @param simpleName true or false, where false prepends package name to the simple name
      * @return a string having class definition in SPOT format
      */
-    public static String spotTheClassWithParents( Class< ? > clazz, boolean simpleName ) {
+    public static SpotClass spotTheClassWithParents( Class< ? > clazz, boolean simpleName ) {
         return spotTheClassWithParents( clazz, simpleName, null );
     }
 
@@ -216,7 +218,7 @@ public class JSpot {
      * @param alias alias used as the reference to the class clazz. Both, name and alias, can be used equally.
      * @return a string having class definition in SPOT format
      */
-    public static String spotTheClassWithParents( Class< ? > clazz, String alias ) {
+    public static SpotClass spotTheClassWithParents( Class< ? > clazz, String alias ) {
         return spotTheClassWithParents( clazz, true, alias );
     }
 
@@ -229,7 +231,7 @@ public class JSpot {
      * @param alias alias used as the reference to the class clazz. Both, name and alias, can be used equally.
      * @return a string having object's definition in SPOT format
      */
-    public static String spotTheClassWithParents( Class< ? > clazz, boolean simpleName, String alias ) {
+    public static SpotClass spotTheClassWithParents( Class< ? > clazz, boolean simpleName, String alias ) {
         SpotClass spotted = ( new ClassSpotter() ).getParentAttributes( clazz, alias );
         String result;
         if ( simpleName ) {
@@ -240,6 +242,6 @@ public class JSpot {
         if ( !StringUtils.isEmpty( spotted.getAlias() ) ) {
             result = result.concat( JSpot.CLASS_ALIAS_SEPARATOR ).concat( spotted.getAlias() );
         }
-        return result;
+        return spotted;
     }
 }
