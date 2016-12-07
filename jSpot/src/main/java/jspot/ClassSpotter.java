@@ -31,9 +31,13 @@ public class ClassSpotter {
     protected SpotClass getParentAttributes( Class< ? > clazz, String alias ) {
         if ( null != clazz.getPackage() ) {
             spotted.setClassPackage( clazz.getPackage().getName().trim() );
+        } else {
+            spotted.setClassPackage("");
         }
         if ( null != clazz.getSimpleName() ) {
             spotted.setClassName( clazz.getSimpleName().trim() );
+        } else {
+            spotted.setClassName("");
         }
         while ( clazz.getSuperclass() != null ) {
             getInterfaceAttributes( clazz );
@@ -67,8 +71,7 @@ public class ClassSpotter {
 
         for ( Field f : clazz.getDeclaredFields() ) {
             // allow to add just unique attributes names
-            String arrayed = JSpot.ATTRIBUTES_ARRAY_LEFT_SEPARATOR
-                    .concat( f.getName() )
+            String arrayed = JSpot.ATTRIBUTES_ARRAY_LEFT_SEPARATOR.concat( f.getName() )
                     .concat( JSpot.ATTRIBUTES_ARRAY_RIGHT_SEPARATOR );
             if ( !spotted.getAttributesList().contains( f.getName() )
                     && !spotted.getAttributesList().contains( arrayed ) ) {
@@ -84,15 +87,16 @@ public class ClassSpotter {
     }
 
     protected SpotClass getAttributes( final Class< ? > clazz, String alias ) {
-        getAttributes( clazz);
+        getAttributes( clazz );
         spotted.setAlias( alias );
         return spotted;
     }
-        /**
-         * Uset to get attributes from interfaces of the given class.
-         *
-         * @param clazz is the class which needs to be analyzed
-         */
+
+    /**
+     * Uset to get attributes from interfaces of the given class.
+     *
+     * @param clazz is the class which needs to be analyzed
+     */
     private void getInterfaceAttributes( final Class< ? > clazz ) {
         for ( Class ifc : clazz.getInterfaces() ) {
             getAttributes( ifc );

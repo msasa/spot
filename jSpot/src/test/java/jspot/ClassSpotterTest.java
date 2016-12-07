@@ -20,7 +20,7 @@ abstract class AbstractPerson implements Person {
 }
 
 class Adult extends AbstractPerson {
-    public int age;
+    public int age = 40;
     public List< Person > children;
     public HashMap< String, String > address;
 }
@@ -39,28 +39,25 @@ public class ClassSpotterTest extends Adult {
     void nekiMetod() {}
 
     public static void main( String[] args ) {
-        System.out.println( JSpot.spotTheObject( new Adult() ).getSpotFormat() );
-        System.out.println( JSpot.spotTheObject( new Adult() ).getContent() );
+        System.out.println( JSpot.spotTheObject( new ClassSpotterTest() ));
         System.out.println( "---" );
-        System.out.println( JSpot.spotTheObject( new Adult(), "s" ).getSpotFormat() );
-        System.out.println( JSpot.spotTheObject( new Adult(), "s" ).getContent() );
+        System.out.println( JSpot.spotTheObject( new ClassSpotterTest() ).getSpotFormat() );
+        System.out.println( JSpot.spotTheObject( new ClassSpotterTest() ).getContent() );
         System.out.println( "---" );
-        System.out.println( JSpot.spotTheObject( new Adult(), false ).getSpotFormat() );
-        System.out.println( JSpot.spotTheObject( new Adult(), false ).getContent() );
+        System.out.println( JSpot.spotTheObject( new ClassSpotterTest(), "s" ).setFullNamePrinting( true ) );
         System.out.println( "---" );
-        System.out.println( JSpot.spotTheObject( new Adult(), false, "cst" ).getSpotFormat() );
-        System.out.println( JSpot.spotTheObject( new Adult(), false, "cst" ).getContent() );
+        System.out.println( JSpot.spotTheObject( new ClassSpotterTest(), "s" ).getSpotFormat() );
+        System.out.println( JSpot.spotTheObject( new ClassSpotterTest(), "s" ).getContent() );
         System.out.println( "---" );
-        System.out.println( JSpot.spotTheClass( Adult.class ).getSpotFormat() );
-        System.out.println( JSpot.spotTheClass( Adult.class, false ).getSpotFormat() );
+        System.out.println( JSpot.spotTheObjectWithParents( new ClassSpotterTest(), "cst" ).getSpotFormat() );
+        System.out.println( JSpot.spotTheObjectWithParents( new ClassSpotterTest(), "cst" ).getContent() );
         System.out.println( "---" );
-        System.out.println( JSpot.spotTheObjectWithParents( new Adult() ).getContent() );
-        System.out.println( JSpot.spotTheObjectWithParents( new Adult(), false ).getContent() );
+        System.out.println( JSpot.spotTheObjectWithParents( new ClassSpotterTest(), "cst" ) );
         System.out.println( "---" );
-        System.out.println( JSpot.spotTheClassWithParents( Adult.class, "s"  ).getSpotFormat() );
-        System.out.println( JSpot.spotTheClassWithParents( Adult.class, false, "s"  ).getSpotFormat() );
+        System.out.println( JSpot.spotTheClass( ClassSpotterTest.class ) );
+        System.out.println( JSpot.spotTheClass( ClassSpotterTest.class ).getSpotFormat() );
         System.out.println( "---" );
-        System.out.println( JSpot.spotTheClassWithParents( Adult.class, false ).getSpotFormat() );
-        System.out.println( JSpot.spotTheClassWithParents( Adult.class, false, "bla" ).getSpotFormat() );
+        System.out.println( JSpot.spotTheClassWithParents( ClassSpotterTest.class, "sasa" ).getSpotFormat() );
+        System.out.println( JSpot.spotTheClassWithParents( ClassSpotterTest.class, "sasa" ) );
     }
 }

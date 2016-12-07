@@ -1,6 +1,8 @@
 package jspot;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Field;
+import java.util.Collection;
 import java.util.List;
 import java.util.StringJoiner;
 
@@ -30,7 +32,18 @@ public class ObjectSpotter {
                 field.setAccessible( true );
                 Object o = field.get( obj );
                 if ( null != o ) {
-                    values.add( o.toString() );
+                    if ( field.getType().isArray() ) {
+                        for ( Object element: ( Object[] ) o ){
+                            values.add( element.toString() );
+                        }
+                    } else if ( Collection.class.isAssignableFrom( field.getType() ) ){
+                        for ( Object element: ( Collection<?> ) o ){
+                            values.add( element.toString() );
+                        }
+                    }
+                    else {
+                        values.add( o.toString() );
+                    }
                 } else {
                     values.add( "" );
                 }

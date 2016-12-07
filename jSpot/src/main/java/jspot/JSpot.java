@@ -1,7 +1,5 @@
 package jspot;
 
-import org.apache.commons.lang3.StringUtils;
-
 /**
  * Created by Sasa Milenkovic on 2016/11/30
  * This is the main class which holds main interface for API usage
@@ -15,7 +13,7 @@ public class JSpot {
     public static final String ATTRIBUTES_SEPARATOR = "|";
     public static final String ATTRIBUTES_ARRAY_LEFT_SEPARATOR = "[";
     public static final String ATTRIBUTES_ARRAY_RIGHT_SEPARATOR = "]";
-    public static final String CLASS_CONTENT_START = CLASS_NAME_SEPARATOR.concat( CLASS_SEPARATOR_LEFT );
+    public static final String CLASS_CONTENT_START = CLASS_SEPARATOR_LEFT;
 
     public static final String REFERENCE_SYMBOL = "$";
     public static final String REFERENCE_LEFT_SEPARATOR = "{";
@@ -28,54 +26,29 @@ public class JSpot {
     /**
      * Instances should NOT be constructed.
      */
-    private JSpot() {}
+    private JSpot() {
+    }
 
     /**
-     * Converts Java object to SPOT format using simple name. It converts just attributes of the given objects,
-     * but not its parents.
+     * Converts Java object to the SPOT format. It converts just attributes of the given objects, but not its parents.
      *
      * @param o object to convert
      * @return a string having object's definition in SPOT format
      */
     public static SpotClass spotTheObject( Object o ) {
-        return spotTheObject( o, true, null );
+        return spotTheObject( o, null );
     }
 
     /**
-     * Converts Java object to SPOT format using simple name. It converts just attributes of the given objects,
-     * but not its parents.
+     * Converts Java object to the SPOT format. It converts attributes of the given object and its parents, but not
+     * the root Java Object's attributes. Also assigns an alias reference to the object.
      *
-     * @param o object to convert
+     * @param o     object to convert
      * @param alias alias used as the reference to the object o. Both, name and alias, can be used equally.
      * @return a string having object's definition in SPOT format
      */
     public static SpotClass spotTheObject( Object o, String alias ) {
-        return spotTheObject( o, true, alias );
-    }
-
-    /**
-     * Converts Java object to SPOT format with ability to choose between object's simple or full name.  It converts
-     * attributes of the given object and its parents, but not the root Java Object's attributes.
-     *
-     * @param o          object to convert
-     * @param simpleName true or false, where false prepends package name to the simple name
-     * @return a string having object's definition in SPOT format
-     */
-    public static SpotClass spotTheObject( Object o, boolean simpleName ) {
-        return spotTheObject( o, simpleName, null );
-    }
-
-    /**
-     * Converts Java object to SPOT format with ability to choose between object's simple or full name.  It converts
-     * attributes of the given object and its parents, but not the root Java Object's attributes.
-     *
-     * @param o          object to convert
-     * @param simpleName true or false, where false prepends package name to the simple name
-     * @param alias alias used as the reference to the object o. Both, name and alias, can be used equally.
-     * @return a string having object's definition in SPOT format
-     */
-    public static SpotClass spotTheObject( Object o, boolean simpleName, String alias ) {
-        SpotClass spotted = spotTheClass( o.getClass(), simpleName, alias );
+        SpotClass spotted = spotTheClass( o.getClass(), alias );
         return ObjectSpotter.getAttributesValues( o, spotted );
     }
 
@@ -87,44 +60,19 @@ public class JSpot {
      * @return a string having object's definition in SPOT format
      */
     public static SpotClass spotTheObjectWithParents( Object o ) {
-        return spotTheObjectWithParents( o, true, null );
+        return spotTheObjectWithParents( o, null );
     }
 
     /**
      * Converts Java object to SPOT format using simple name. It converts attributes of the given object and its
-     * parents, but not the root Java Object's attributes.
+     * parents, but not the root Java Object's attributes. Also assigns an alias reference to the object.
      *
-     * @param o object to convert
+     * @param o     object to convert
      * @param alias alias used as the reference to the object o. Both, name and alias, can be used equally.
      * @return a string having object's definition in SPOT format
      */
     public static SpotClass spotTheObjectWithParents( Object o, String alias ) {
-        return spotTheObjectWithParents( o, true, alias );
-    }
-
-    /**
-     * Converts Java object to SPOT format with ability to choose between object's simple or full name. It converts
-     * attributes of the given object and its parents, but not the root Java Object's attributes.
-     *
-     * @param o          object to convert
-     * @param simpleName true or false, where false prepends package name to the simple name
-     * @return a string having object's definition in SPOT format
-     */
-    public static SpotClass spotTheObjectWithParents( Object o, boolean simpleName ) {
-        return spotTheObjectWithParents( o, simpleName, null );
-    }
-
-    /**
-     * Converts Java object to SPOT format with ability to choose between object's simple or full name. It converts
-     * attributes of the given object and its parents, but not the root Java Object's attributes.
-     *
-     * @param o          object to convert
-     * @param simpleName true or false, where false prepends package name to the simple name
-     * @param alias alias used as the reference to the object o. Both, name and alias, can be used equally.
-     * @return a string having object's definition in SPOT format
-     */
-    public static SpotClass spotTheObjectWithParents( Object o, boolean simpleName, String alias ) {
-        SpotClass spotted = spotTheClassWithParents( o.getClass(), simpleName, alias );
+        SpotClass spotted = spotTheClassWithParents( o.getClass(), alias );
         return ObjectSpotter.getAttributesValues( o, spotted );
     }
 
@@ -136,55 +84,19 @@ public class JSpot {
      * @return a string having class definition in SPOT format
      */
     public static SpotClass spotTheClass( Class< ? > clazz ) {
-        return spotTheClass( clazz, true, null );
+        return spotTheClass( clazz, null );
     }
 
     /**
-     * Converts Java class to SPOT format using simple name. It converts just attributes of the given class,
-     * but not its parents.
-     *
-     * @param clazz class to convert
-     * @param simpleName true or false, where false prepends package name to the simple name
-     * @return a string having class definition in SPOT format
-     */
-    public static SpotClass spotTheClass( Class< ? > clazz, boolean simpleName ) {
-        return spotTheClass( clazz, simpleName, null );
-    }
-
-    /**
-     * Converts Java class to SPOT format using simple name. It converts just attributes of the given class,
-     * but not its parents.
+     * Converts Java class to SPOT format with ability to choose between class simple or full name. It converts
+     * just attributes of the given class, but not its parents. Also assigns an alias reference to the class.
      *
      * @param clazz class to convert
      * @param alias alias used as the reference to the class clazz. Both, name and alias, can be used equally.
      * @return a string having class definition in SPOT format
      */
     public static SpotClass spotTheClass( Class< ? > clazz, String alias ) {
-        return spotTheClass( clazz, true, alias );
-    }
-
-    /**
-     * Converts Java class to SPOT format with ability to choose between class simple or full name. It converts
-     * just attributes of the given class, but not its parents.
-     *
-     * @param clazz      class to convert
-     * @param simpleName true or false, where false prepends package name to the simple name
-     * @param alias alias used as the reference to the class clazz. Both, name and alias, can be used equally.
-     * @return a string having class definition in SPOT format
-     */
-    public static SpotClass spotTheClass( Class< ? > clazz, boolean simpleName, String alias ) {
-        SpotClass spotted = ( new ClassSpotter() ).getAttributes( clazz, alias );
-        String result;
-        if ( simpleName ) {
-            result = spotted.getClassName().concat( spotted.getSpotFormat() );
-        } else {
-            result = spotted.getFullName().concat( spotted.getSpotFormat() );
-        }
-        if ( !StringUtils.isEmpty( spotted.getAlias() ) ) {
-            result = result.concat( JSpot.CLASS_ALIAS_SEPARATOR ).concat( spotted.getAlias() );
-        }
-        return spotted;
-
+        return ( new ClassSpotter() ).getAttributes( clazz, alias );
     }
 
     /**
@@ -195,53 +107,18 @@ public class JSpot {
      * @return a string having class definition in SPOT format
      */
     public static SpotClass spotTheClassWithParents( Class< ? > clazz ) {
-        return spotTheClassWithParents( clazz, true, null );
+        return spotTheClassWithParents( clazz, null );
     }
 
     /**
-     * Converts Java class to SPOT format using simple name. It converts attributes of the given class and its
-     * parents, but not the root Java Object's attributes.
+     * Converts Java class to the SPOT format. It converts attributes of the given class and its parents, but not the
+     * root Java Object's attributes. Also assigns an alias reference to the class.
      *
      * @param clazz class to convert
-     * @param simpleName true or false, where false prepends package name to the simple name
-     * @return a string having class definition in SPOT format
-     */
-    public static SpotClass spotTheClassWithParents( Class< ? > clazz, boolean simpleName ) {
-        return spotTheClassWithParents( clazz, simpleName, null );
-    }
-
-    /**
-     * Converts Java class to SPOT format using simple name. It converts attributes of the given class and its
-     * parents, but not the root Java Object's attributes.
-     *
-     * @param clazz class to convert
-     * @param alias alias used as the reference to the class clazz. Both, name and alias, can be used equally.
-     * @return a string having class definition in SPOT format
-     */
-    public static SpotClass spotTheClassWithParents( Class< ? > clazz, String alias ) {
-        return spotTheClassWithParents( clazz, true, alias );
-    }
-
-    /**
-     * Converts Java class to SPOT format with ability to choose between class simple or full name.  It converts
-     * attributes of the given class and its parents, but not the root Java Object's attributes.
-     *
-     * @param clazz      object to convert
-     * @param simpleName true or false, where false prepends package name to the simple name
      * @param alias alias used as the reference to the class clazz. Both, name and alias, can be used equally.
      * @return a string having object's definition in SPOT format
      */
-    public static SpotClass spotTheClassWithParents( Class< ? > clazz, boolean simpleName, String alias ) {
-        SpotClass spotted = ( new ClassSpotter() ).getParentAttributes( clazz, alias );
-        String result;
-        if ( simpleName ) {
-            result = spotted.getClassName().concat( spotted.getSpotFormat() );
-        } else {
-            result = spotted.getFullName().concat( spotted.getSpotFormat() );
-        }
-        if ( !StringUtils.isEmpty( spotted.getAlias() ) ) {
-            result = result.concat( JSpot.CLASS_ALIAS_SEPARATOR ).concat( spotted.getAlias() );
-        }
-        return spotted;
+    public static SpotClass spotTheClassWithParents( Class< ? > clazz, String alias ) {
+        return ( new ClassSpotter() ).getParentAttributes( clazz, alias );
     }
 }

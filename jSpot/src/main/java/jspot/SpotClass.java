@@ -1,5 +1,7 @@
 package jspot;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -13,6 +15,7 @@ public class SpotClass {
 
     private static String PACKAGE_SEPARATOR = "";
     private final List< String > attributesList = new CopyOnWriteArrayList<>();
+    private boolean simpleNamed = true;
     private String classPackage = "";
     private String className = "";
     private String spotFormat = "";
@@ -22,7 +25,8 @@ public class SpotClass {
     /**
      * Can be instantiated just from within the package
      */
-    protected SpotClass() {}
+    protected SpotClass() {
+    }
 
     public String getClassName() {
         return className;
@@ -73,5 +77,51 @@ public class SpotClass {
             PACKAGE_SEPARATOR = ".";
         }
         return getClassPackage().concat( PACKAGE_SEPARATOR ).concat( getClassName() );
+    }
+
+    public boolean isSimpleNamePrinting() {
+        return simpleNamed;
+    }
+
+    public SpotClass setSimpleNamePrinting( boolean printSimpleName ) {
+        simpleNamed = printSimpleName;
+        return this;
+    }
+
+    public boolean isFullNamePrinting() {
+        return !simpleNamed;
+    }
+
+    public SpotClass setFullNamePrinting( boolean printFullName ) {
+        simpleNamed = !printFullName;
+        return this;
+    }
+
+    @Override
+    public String toString() {
+        StringBuffer sb = new StringBuffer( isFullNamePrinting() ? getFullName() : getClassName() );
+
+        sb.append( JSpot.CLASS_NAME_SEPARATOR ).append( getSpotFormat() );
+
+        if ( null != getAlias() ) {
+            sb.append( JSpot.CLASS_ALIAS_SEPARATOR).append( getAlias() );
+        }
+        sb.append( StringUtils.LF );
+
+        if ( StringUtils.isEmpty( getContent() ) ) {
+            return sb.toString();
+        }
+
+        if ( null != getAlias() ) {
+            sb.append( getAlias() );
+        } else {
+            if ( isSimpleNamePrinting() ) {
+                sb.append( getClassName() );
+            } else {
+                sb.append( getFullName() );
+            }
+        }
+        sb.append( JSpot.CLASS_NAME_SEPARATOR ).append( getContent() );
+        return sb.toString();
     }
 }
