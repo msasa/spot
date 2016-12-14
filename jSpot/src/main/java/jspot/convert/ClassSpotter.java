@@ -32,19 +32,19 @@ public class ClassSpotter {
         if ( null != clazz.getPackage() ) {
             spotted.setClassPackage( clazz.getPackage().getName().trim() );
         } else {
-            spotted.setClassPackage("");
+            spotted.setClassPackage( "" );
         }
         if ( null != clazz.getSimpleName() ) {
             spotted.setClassName( clazz.getSimpleName().trim() );
         } else {
-            spotted.setClassName("");
+            spotted.setClassName( "" );
         }
         while ( clazz.getSuperclass() != null ) {
             getInterfaceAttributes( clazz );
             getAttributes( clazz, alias );
             clazz = clazz.getSuperclass();
         }
-        spotted.setSpotFormat( spotTheResultList( clazz.getName() ) );
+        spotted.setSpotFormat( spotTheResultList() );
         return spotted;
     }
 
@@ -82,7 +82,7 @@ public class ClassSpotter {
                 }
             }
         }
-        spotted.setSpotFormat( spotTheResultList( clazz.getName() ) );
+        spotted.setSpotFormat( spotTheResultList() );
         return spotted;
     }
 
@@ -103,7 +103,12 @@ public class ClassSpotter {
         }
     }
 
-    private String spotTheResultList( String className ) {
+    /**
+     * Used to pack attributes list in a string where elements are separated by @see{JSpot.ATTRIBUTES_SEPARATOR}
+     *
+     * @return
+     */
+    private String spotTheResultList() {
         if ( !spotted.getAttributesList().isEmpty() ) {
             StringJoiner spot = new StringJoiner( JSpot.ATTRIBUTES_SEPARATOR, JSpot.CLASS_CONTENT_START,
                     JSpot.CLASS_SEPARATOR_RIGHT );
