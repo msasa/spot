@@ -37,6 +37,7 @@ It is possible to use special math operations inside $# ref # block of reference
 
 ### Examples
 
-<code>Adult |public|protected|none|gender|private|age|!children!|address|height|!siblings!|!parents!|naturallyConcieved|@A</code><br />
-<code>A |true|null|false||M|true|35| !Mellanie|Peter! ||6.62| !! | !John|Miriam! |0|@first</code><br />
-<code>A |$#first#|</code>
+<code>Adult |public|protected|none|gender|private|age| !children! |address|height| !siblings! | !parents! 
+|naturallyConcieved|@A
+A |true|null|false||M|true|35| !Mellanie|Peter! ||6.62| !! | !John|Miriam! |0|@first
+A |$#first#|</code>
