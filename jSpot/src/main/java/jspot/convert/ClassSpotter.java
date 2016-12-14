@@ -1,4 +1,4 @@
-package jspot;
+package jspot.convert;
 
 import org.apache.commons.lang3.StringUtils;
 

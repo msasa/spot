@@ -1,4 +1,4 @@
-package jspot;
+package jspot.convert;
 
 /**
  * Created by Sasa Milenkovic on 2016/11/30

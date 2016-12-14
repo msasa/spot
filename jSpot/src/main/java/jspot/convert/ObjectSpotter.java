@@ -1,6 +1,5 @@
-package jspot;
+package jspot.convert;
 
-import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.List;

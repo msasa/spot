@@ -1,4 +1,4 @@
-package jspot;
+package jspot.convert;
 
 import java.util.HashMap;
 import java.util.List;
