@@ -42,4 +42,3 @@ It is possible to use special math operations inside $# ref # block of reference
 <code>A |true|null|false||M|true|35| !Mellanie|Peter! ||6.62| !! | !John|Miriam! |0|@first</code><br />
 <code>A |$#first#|</code>
 
-```
